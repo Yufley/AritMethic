@@ -558,7 +558,7 @@ function applyProfileEffects(winner, target) {
                 break;
                 
             case 2: // Aşırıcı - 99 girerse %20 ihtimalle -2 puan
-                if (g.guess === 99 && Math.random() < 0.2) {
+                if (g.guess === 99 && Math.random() < 0.3) {
                     player.points = Math.max(0, player.points - 1);
                     showSpecialRuleAnnouncement(`${player.name} şanslı! -2 puan!`);
                 }
