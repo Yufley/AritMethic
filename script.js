@@ -326,7 +326,7 @@ function generateBotGuess(playerId) {
     const baseGuess = () => {
         // 30-45 arasında ağırlıklı dağılım
         if (Math.random() < 0.6) {
-            return 35 + Math.floor(Math.random() * 16); // 35-50 arası
+            return 35 + Math.floor(Math.random() * 36); // 35-50 arası
         } else {
             return Math.floor(Math.random() * 101); // 0-100 arası
         }
