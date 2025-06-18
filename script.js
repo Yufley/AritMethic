@@ -358,10 +358,16 @@ function generateBotGuess(playerId) {
 
             
         case 2: // Aşırıcı
-            if (Math.random() < 0.25) {
-                return 99; // %25 ihtimalle 99
-            }
-            return baseGuess();
+    const rand = Math.random();
+
+    if (rand < 0.25) {
+        return 99; // %25 ihtimalle 99
+    } else if (rand < 0.5) {
+        return Math.floor(Math.random() * 4); // %25 ihtimalle 0-3 arası
+    } else {
+        return 10 + Math.floor(Math.random() * 46); // %50 ihtimalle 10-55 arası (55 - 10 + 1 = 46)
+    }
+
             
         case 3: // Esnekçi - 10-15 fark aralığını hedefler
             if (Math.random() < 0.4) {
