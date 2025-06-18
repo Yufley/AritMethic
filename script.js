@@ -350,7 +350,7 @@ function generateBotGuess(playerId) {
         return 14 + Math.floor(Math.random() * 5); // 14-18
     } else if (r < 1.0) {
         // %10 ihtimalle 55 civarı (54-58)
-        return 54 + Math.floor(Math.random() * 5); // 54-58
+        return 45 + Math.floor(Math.random() * 5); // 54-58
     }
 
     // Her ihtimale karşı fallback
@@ -375,7 +375,7 @@ function generateBotGuess(playerId) {
             return baseGuess();
             
         case 5: // Yaşam - güvenli oynar
-            return 16 + Math.floor(Math.random() * 15); // 38-45 arası daha dar
+            return 10 + Math.floor(Math.random() * 15); // 38-45 arası daha dar
             
         case 6: // Kaosçu - hedefin hemen yanını hedefler
             if (Math.random() < 0.3) {
@@ -388,7 +388,7 @@ function generateBotGuess(playerId) {
             return baseGuess();
             
         case 8: // Kehanetçi - daha iyi tahmin yapar
-            return 36 + Math.floor(Math.random() * 16); // 36-45 arası
+            return 16 + Math.floor(Math.random() * 16); // 36-45 arası
             
         case 9: // Dönüşümcü
             if ([4, 8, 12].includes(game.currentTurn)) {
