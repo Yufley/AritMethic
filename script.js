@@ -352,7 +352,7 @@ function generateBotGuess(playerId) {
             
         case 3: // Esnekçi - 10-15 fark aralığını hedefler
             if (Math.random() < 0.4) {
-                const targetGuess = 32; // Tahmini hedef
+                const targetGuess = 25; // Tahmini hedef
                 const offset = 12 + Math.floor(Math.random() * 4); // 12-15 fark
                 return Math.random() < 0.5 ? targetGuess + offset : targetGuess - offset;
             }
@@ -362,7 +362,7 @@ function generateBotGuess(playerId) {
             return baseGuess();
             
         case 5: // Yaşam - güvenli oynar
-            return 38 + Math.floor(Math.random() * 8); // 38-45 arası daha dar
+            return 16 + Math.floor(Math.random() * 15); // 38-45 arası daha dar
             
         case 6: // Kaosçu - hedefin hemen yanını hedefler
             if (Math.random() < 0.3) {
@@ -375,7 +375,7 @@ function generateBotGuess(playerId) {
             return baseGuess();
             
         case 8: // Kehanetçi - daha iyi tahmin yapar
-            return 36 + Math.floor(Math.random() * 10); // 36-45 arası
+            return 36 + Math.floor(Math.random() * 16); // 36-45 arası
             
         case 9: // Dönüşümcü
             if ([4, 8, 12].includes(game.currentTurn)) {
@@ -517,17 +517,15 @@ function applyProfileEffects(winner, target) {
         
         switch (profile) {
             case 0: // Bağlantılı - ilk 3 turda bağlı oyuncunun durumuna göre etki
-               if (g.player === 0 && game.linkedPlayer !== null && game.currentTurn <= 3) {
-                    const linkedPlayer = game.players[game.linkedPlayer];
-                    if (linkedPlayer.points === 2) {
-                        player.points += 2; // Bağlı oyuncu 2 puandaysa +2 puan ceza
-                    } else if (linkedPlayer.points === 1 || linkedPlayer.points === 3) {
-                        player.points = Math.max(0, player.points - 2); // Bağlı oyuncu 1 veya 3 puandaysa -2 puan
-                    }
-}
-
-                }
-                break;
+   if (g.player === 0 && game.linkedPlayer !== null && game.currentTurn <= 3) {
+        const linkedPlayer = game.players[game.linkedPlayer];
+        if (linkedPlayer.points === 2) {
+            player.points += 2;
+        } else if (linkedPlayer.points === 1 || linkedPlayer.points === 3) {
+            player.points = Math.max(0, player.points - 2);
+        }
+   }
+   break;
                 
             case 1: // Kusursuz - hedefi tam bilirse diğerleri +3 puan alır
                 if (g.guess === target) {
@@ -550,7 +548,7 @@ function applyProfileEffects(winner, target) {
             case 3: // Esnekçi - hedeften 10-15 fark varsa %50 ihtimalle -2 puan
                 const distance = Math.abs(g.guess - target);
                 if (distance >= 10 && distance <= 15 && Math.random() < 0.5) {
-                    player.points = Math.max(0, player.points - 1);
+                    player.points = Math.max(0, player.points - 2);
                     showSpecialRuleAnnouncement(`${player.name} esneklik gösterdi! -2 puan!`);
                 }
                 break;
