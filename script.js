@@ -322,27 +322,40 @@ function generateBotGuess(playerId) {
     const player = game.players[playerId];
     const profile = player.profile;
     
-    // Botlar genel olarak 40 civarında sayılar söylesin
-    const baseGuess = () => {
-        // 30-45 arasında ağırlıklı dağılım
-        if (Math.random() < 0.6) {
-            return 35 + Math.floor(Math.random() * 36); // 35-50 arası
-        } else {
-            return Math.floor(Math.random() * 101); // 0-100 arası
-        }
-    };
+   const baseGuess = () => {
+    // 15-45 arasında %80 ihtimalle
+    if (Math.random() < 0.65) {
+        return 15 + Math.floor(Math.random() * 31); // 15-45 arası (45 - 15 + 1 = 31)
+    } else {
+        return Math.floor(Math.random() * 101); // 0-100 arası
+    }
+};
     
     // Profil bazlı tahmin stratejileri
     switch (profile) {
         case 0: // Bağlantılı
             return baseGuess();
             
-        case 1: // Kusursuz - bazen tam hedef tahmin etmeye çalışır
-            if (Math.random() < 0.3) {
-                // Hedef tahmin etmeye çalış (yaklaşık ortalama * 0.8)
-                return Math.floor(32 + Math.random() * 16); // 32-47 arası (40*0.8 = 32 civarı)
-            }
-            return baseGuess();
+       case 1: // Kusursuz - belirli sayı odakları
+    const r = Math.random();
+
+    if (r < 0.4) {
+        // %40 ihtimalle 25 civarı (24-28)
+        return 24 + Math.floor(Math.random() * 5); // 24-28
+    } else if (r < 0.7) {
+        // %30 ihtimalle 5 civarı (4-8)
+        return 4 + Math.floor(Math.random() * 5); // 4-8
+    } else if (r < 0.9) {
+        // %20 ihtimalle 15 civarı (14-18)
+        return 14 + Math.floor(Math.random() * 5); // 14-18
+    } else if (r < 1.0) {
+        // %10 ihtimalle 55 civarı (54-58)
+        return 54 + Math.floor(Math.random() * 5); // 54-58
+    }
+
+    // Her ihtimale karşı fallback
+    return baseGuess();
+
             
         case 2: // Aşırıcı
             if (Math.random() < 0.25) {
