@@ -517,13 +517,16 @@ function applyProfileEffects(winner, target) {
         
         switch (profile) {
             case 0: // Bağlantılı - ilk 3 turda bağlı oyuncunun durumuna göre etki
-                if (g.player === 0 && game.linkedPlayer !== null && game.currentTurn <= 3) {
-                    const linkedPlayer = game.players[game.linkedPlayer];
-                    if (linkedPlayer.points === 2) {
-                        player.points += 2; // Bağlı oyuncu 2 puandaysa +2 puan ceza
-                    } else if (linkedPlayer.points === 1 || linkedPlayer.points === 3) {
-                        player.points = Math.max(0, player.points - 2); // Bağlı oyuncu 1 veya 3 puandaysa -2 puan
-                    }
+               if (g.player === 0 && game.linkedPlayer !== null && game.currentTurn <= 3) {
+    const linkedPlayer = game.players[game.linkedPlayer];
+
+    if (linkedPlayer.points === 3) {
+        player.points += 2; // Bağlı oyuncu 3 puandaysa (hiç bilememişse) +2 ceza
+    } else if (linkedPlayer.points < 3) {
+        player.points = Math.max(0, player.points - 2); // En az bir tahmini doğruysa -2 puan
+    }
+}
+
                 }
                 break;
                 
@@ -545,11 +548,11 @@ function applyProfileEffects(winner, target) {
                 }
                 break;
                 
-            case 3: // Esnekçi - hedeften 10-15 fark varsa %50 ihtimalle -1 puan
+            case 3: // Esnekçi - hedeften 10-15 fark varsa %50 ihtimalle -2 puan
                 const distance = Math.abs(g.guess - target);
                 if (distance >= 10 && distance <= 15 && Math.random() < 0.5) {
                     player.points = Math.max(0, player.points - 1);
-                    showSpecialRuleAnnouncement(`${player.name} esneklik gösterdi! -1 puan!`);
+                    showSpecialRuleAnnouncement(`${player.name} esneklik gösterdi! -2 puan!`);
                 }
                 break;
                 
