@@ -393,7 +393,7 @@ function shouldHideGuess(playerId) {
     const player = game.players[playerId];
     
     // Her 2 turda bir gizle
-    if (game.currentTurn % 1 === 0) return true;
+    if (game.currentTurn % 2 === 0) return true;
     
     // En yüksek veya en düşük puandaysa her zaman gizle
     const activePlayers = game.getActivePlayers();
