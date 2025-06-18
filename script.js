@@ -430,7 +430,7 @@ function shouldHideGuess(playerId) {
 function applySwapperEffect() {
     // Değiştirici profili etkisi - %15 ihtimalle hedef oyuncunun sayısını değiştir
     game.players.forEach((player, index) => {
-        if (player.profile === 7 && player.active && Math.random() < 0.15) {
+        if (player.profile === 7 && player.active && Math.random() < 0.30) {
             const targetPlayerId = game.swapperTargets[index];
             if (targetPlayerId !== undefined) {
                 // Swapper ve hedef oyuncunun tahminlerini bul
@@ -557,10 +557,10 @@ function applyProfileEffects(winner, target) {
                 }
                 break;
                 
-            case 2: // Aşırıcı - 99 girerse %20 ihtimalle -1 puan
+            case 2: // Aşırıcı - 99 girerse %20 ihtimalle -2 puan
                 if (g.guess === 99 && Math.random() < 0.2) {
                     player.points = Math.max(0, player.points - 1);
-                    showSpecialRuleAnnouncement(`${player.name} şanslı! -1 puan!`);
+                    showSpecialRuleAnnouncement(`${player.name} şanslı! -2 puan!`);
                 }
                 break;
                 
@@ -593,14 +593,14 @@ function applyProfileEffects(winner, target) {
             case 9: // Dönüşümcü - 4, 8, 12. turlarda özel güç
                 if ([4, 8, 12].includes(game.currentTurn)) {
                     const rand = Math.random();
-                    if (rand < 0.4) {
+                    if (rand < 0.7) {
                         // Sadece bu oyuncu ceza yemez
                         if (g.player !== winner.player) {
                             const penalty = game.players[g.player].points > 0 ? 1 : 0;
                             player.points = Math.max(0, player.points - penalty);
                             showSpecialRuleAnnouncement(`${player.name} dönüştü! Ceza almadı!`);
                         }
-                    } else if (rand < 0.8) {
+                    } else if (rand < 0.5) {
                         // Sadece bu oyuncu hariç diğerleri +2 alır
                         game.currentGuesses.forEach(other => {
                             if (other.player !== g.player) {
