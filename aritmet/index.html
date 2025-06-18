@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ARİTMETİK</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Font Awesome ikonları -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="game-container">
+        <!-- Oyun Başlığı -->
+        <header>
+            <h1><i class="fas fa-bullseye"></i> VAHŞET ARİTMETİK</h1>
+            <div class="game-status">
+                <span id="current-turn"><i class="fas fa-rotate"></i> Tur: 1</span>
+                <span id="remaining-players"><i class="fas fa-users"></i> Oyuncu: 5</span>
+            </div>
+        </header>
+
+        <!-- Skor Tablosu -->
+        <div class="scoreboard">
+            <h2><i class="fas fa-trophy"></i> SKOR TABLOSU</h2>
+            <div class="scores">
+                <div class="player-score" id="player-0">
+                    <span class="player-name">Sen</span>
+                    <span class="player-points">0</span>
+                    <span class="player-status"><i class="fas fa-check-circle"></i> Aktif</span>
+                </div>
+                <div class="player-score" id="player-1">
+                    <span class="player-name">Hamza Eymen</span>
+                    <span class="player-points">0</span>
+                    <span class="player-status"><i class="fas fa-check-circle"></i> Aktif</span>
+                </div>
+                <div class="player-score" id="player-2">
+                    <span class="player-name">Ebu Cehil</span>
+                    <span class="player-points">0</span>
+                    <span class="player-status"><i class="fas fa-check-circle"></i> Aktif</span>
+                </div>
+                <div class="player-score" id="player-3">
+                    <span class="player-name">Chisiya</span>
+                    <span class="player-points">0</span>
+                    <span class="player-status"><i class="fas fa-check-circle"></i> Aktif</span>
+                </div>
+                <div class="player-score" id="player-4">
+                    <span class="player-name">Gus Fring</span>
+                    <span class="player-points">0</span>
+                    <span class="player-status"><i class="fas fa-check-circle"></i> Aktif</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Oyun Alanı -->
+        <div class="game-area">
+            <!-- Tahmin Girme Bölümü -->
+            <div class="input-section" id="input-section">
+                <h3><i class="fas fa-arrow-right-to-bracket"></i> Tahminini Gir (0-100)</h3>
+                <div class="input-container">
+                    <input type="number" id="guess-input" min="0" max="100" placeholder="Sayı gir..." aria-label="Tahmin girişi">
+                    <button id="ready-btn" aria-label="Hazırım butonu">
+                        <i class="fas fa-paper-plane"></i> Hazırım Kral
+                    </button>
+                </div>
+                <div class="timer">
+                    <span><i class="fas fa-clock"></i> Kalan Süre: </span>
+                    <span id="countdown">40</span>
+                    <span> saniye</span>
+                </div>
+            </div>
+
+            <!-- Sonuç Gösterme Bölümü -->
+            <div class="result-section" id="result-section" style="display: none;">
+                <h3><i class="fas fa-chart-column"></i> Tur Sonucu</h3>
+                <div class="result-info">
+                    <div class="target-number">
+                        <span>Hedef Sayı: </span>
+                        <span id="target-number">0</span>
+                    </div>
+                    <div class="guesses">
+                        <h4><i class="fas fa-list-ol"></i> Tahminler:</h4>
+                        <div id="all-guesses"></div>
+                    </div>
+                    <div class="round-winner">
+                        <span id="round-winner">Hamza Eymen K. kazandı!</span>
+                    </div>
+                </div>
+                <div class="next-round-timer">
+                    <span><i class="fas fa-forward"></i> Sonraki tur: </span>
+                    <span id="next-round-countdown">10</span>
+                    <span> saniye</span>
+                </div>
+            </div>
+
+            <!-- Oyun Sonu Bölümü -->
+            <div class="game-end-section" id="game-end-section" style="display: none;">
+                <h2><i class="fas fa-crown"></i> OYUN BİTTİ!</h2>
+                <div class="game-winner">
+                    <span id="game-winner">Sen Kazandın!</span>
+                </div>
+                <button id="restart-btn" aria-label="Yeniden başlat butonu">
+                    <i class="fas fa-rotate-right"></i> Yeniden Başla
+                </button>
+            </div>
+        </div>
+
+        <!-- Bilgi ve Duyurular -->
+        <div class="announcements">
+            <div id="elimination-announcement" class="announcement" style="display: none;" aria-live="assertive">
+                <span id="elimination-text"><i class="fas fa-skull"></i> Ebu Cehil elendi!</span>
+            </div>
+            <div id="special-rule-announcement" class="announcement" style="display: none;" aria-live="assertive">
+                <span id="special-rule-text"><i class="fas fa-magic"></i> Özel kural aktif!</span>
+            </div>
+        </div>
+
+        <!-- Profil Seçimi (Başlangıçta) -->
+        <div class="profile-selection" id="profile-selection">
+            <h2><i class="fas fa-user-tie"></i> OYUNCU PROFİLİNİ SEÇ</h2>
+            <p class="profile-instruction">GİZLİ YETENEKLERİN OLACAK, hangisini seçersen seçtiğin gizli kalacak!</p>
+            <div class="profiles">
+                <button class="profile-btn" data-profile="0">
+                    <span class="profile-name">Saplantılı</span>
+                    <span class="profile-desc">Bir oyuncuya bağlı olursun. Bağlandığın oyuncu ilk 3 turda toplamda +2 puan alırsa, bu oyuncu fazladan +2 puan kazanır.
+</span>
+                </button>
+                <button class="profile-btn" data-profile="1">
+                    <span class="profile-name">Kusursuz</span>
+                    <span class="profile-desc">Tam bilirsen düşmanlarına yıkıcı bir etki yaparsın. HERKESE +3 BAM BAM BAM.</span>
+                </button>
+                <button class="profile-btn" data-profile="2">
+                    <span class="profile-name">BabaproKumarbaz_99</span>
+                    <span class="profile-desc">99 sayısını girersen yüzde 20 iihtimalle tur sırasında + almazsın </span>
+                </button>
+                <button class="profile-btn" data-profile="3">
+                    <span class="profile-name">Suriyeli</span>
+                    <span class="profile-desc">Orta aralık avantajına sahipsin. Hedef sayıdan 10–15 puan farkla (fazla veya az) sayı söylersen,
+%50 ihtimalle + puan almazsın dostum. Esed bum bum.
+</span>
+                </button>
+                <button class="profile-btn" data-profile="4">
+                    <span class="profile-name">Gölge</span>
+                    <span class="profile-desc">Her 2 turda bir, seçtiği sayı görünmez olur.
+Eğer en yüksek ya da en düşük puana sahipsen, sayın hiçbir zaman görünmez. Bu sayede rakiplerin senin üzerinde psikolojik analiz yapamaz.
+</span>
+                </button>
+                <button class="profile-btn" data-profile="5">
+                    <span class="profile-name">ÖLÜMSÜZ</span>
+                    <span class="profile-desc">+10 a ulaşırsan elenmeden kurtulursun. Ama yalnızca bir kere...</span>
+                </button>
+                <button class="profile-btn" data-profile="6">
+                    <span class="profile-name">Sniper usame bin ladin</span>
+                    <span class="profile-desc">Eğer hedefi sadece 1 farkla kaçırırsan, diğer tüm oyuncular +2 puan alır. Nokta atışı yapmalısın!!!
+</span>
+                </button>
+                <button class="profile-btn" data-profile="7">
+                    <span class="profile-name">Virane niga</span>
+                    <span class="profile-desc">Maç başında bir oyuncu seçersin. Hamlelerine güvendiğin zeki birini seçmeyi unutma!
+Her tur %15 ihtimalle, kendinin ve seçtiğin kişinin sayıları yer değiştirir. Avantajını nasıl kullanacaksın?
+</span>
+                </button>
+                <button class="profile-btn" data-profile="8">
+                    <span class="profile-name">Kahin</span>
+                    <span class="profile-desc">3., 6. ve 9. turlarda, diğer oyuncular sayılarını senden önce girer. Onlar sayılarını girdikten sonra
+hedef sayıyı ±5 sapmayla sana gösterilir. Kehanet, hedefe en yakın sayıyı bilmen de çok yardımcı olacak.
+Ardından 10 saniye içinde kendi sayısını girer.
+</span>
+                </button>
+                <button class="profile-btn" data-profile="9">
+                    <span class="profile-name">Kumarbaz</span>
+                    <span class="profile-desc">4., 8., 12. turlarda otomatik çalışır:
+
+%40 ihtimalle: Hiç + almazsın
+
+%40 ihtimalle: Diğer herkes +2 alırsın
+
+%20 ihtimalle: Herkes (kendin dahil) +2 alırsın</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Oyuncu Seçimi (Bağlantılı profil için) -->
+        <div class="player-selection" id="player-selection" style="display: none;">
+            <h3><i class="fas fa-link"></i> Hangi oyuncuya bağlanmak istiyorsun?</h3>
+            <div class="player-buttons">
+                <button class="select-player-btn" data-player="1">
+                    <i class="fas fa-user"></i> Hamza Eymen K.
+                </button>
+                <button class="select-player-btn" data-player="2">
+                    <i class="fas fa-user"></i> Ebu Cehil
+                </button>
+                <button class="select-player-btn" data-player="3">
+                    <i class="fas fa-user"></i> Chisiya
+                </button>
+                <button class="select-player-btn" data-player="4">
+                    <i class="fas fa-user"></i> Gus Fring
+                </button>
+            </div>
+        </div>
+
+        <!-- Kehanetçi Profili için Özel Bilgi -->
+        <div class="prophecy-info" id="prophecy-info" style="display: none;">
+            <h3><i class="fas fa-crystal-ball"></i> KEHÂNET</h3>
+            <p>Bu turda hedef sayı yaklaşık: <span id="prophecy-target">?</span></p>
+            <div class="prophecy-timer">
+                <span><i class="fas fa-hourglass-half"></i> Özel süren: </span>
+                <span id="prophecy-countdown">10</span>
+                <span> saniye</span>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
